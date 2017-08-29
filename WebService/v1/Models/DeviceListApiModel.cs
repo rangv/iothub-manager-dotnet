@@ -15,8 +15,10 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
             { "$uri", "/" + Version.Path + "/devices" }
         };
 
+        [JsonProperty(PropertyName = "ContinuationToken", NullValueHandling = NullValueHandling.Ignore)]
         public string ContinuationToken { get; set; }
 
+        [JsonProperty(PropertyName = "Items", NullValueHandling = NullValueHandling.Ignore)]
         public List<DeviceRegistryApiModel> Items { get; set; }
 
         public DeviceListApiModel()
@@ -26,8 +28,12 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
         public DeviceListApiModel(DeviceServiceListModel devices)
         {
             this.Items = new List<DeviceRegistryApiModel>();
-            this.ContinuationToken = devices.ContinuationToken;
-            foreach (var d in devices.Items) this.Items.Add(new DeviceRegistryApiModel(d));
+
+            if (devices == null)
+            {
+                this.ContinuationToken = devices.ContinuationToken;
+                foreach (var d in devices.Items) this.Items.Add(new DeviceRegistryApiModel(d));
+            }
         }
     }
 }

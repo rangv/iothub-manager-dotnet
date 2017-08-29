@@ -3,15 +3,25 @@
 using System.Collections.Generic;
 using Microsoft.Azure.IoTSolutions.IotHubManager.Services.Models;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
 {
     public class JobUpdateTwinApiModel
     {
+        [JsonProperty(PropertyName = "Etag", NullValueHandling = NullValueHandling.Ignore)]
         public string Etag { get; set; }
+
+        [JsonProperty(PropertyName = "DeviceId", NullValueHandling = NullValueHandling.Ignore)]
         public string DeviceId { get; set; }
+
+        [JsonProperty(PropertyName = "Properties", NullValueHandling = NullValueHandling.Ignore)]
         public TwinPropertiesApiModel Properties { get; set; }
+
+        [JsonProperty(PropertyName = "Tags", NullValueHandling = NullValueHandling.Ignore)]
         public Dictionary<string, JToken> Tags { get; set; }
+
+        [JsonProperty(PropertyName = "IsSimulated")]
         public bool IsSimulated { get; set; }
 
         public JobUpdateTwinApiModel()
@@ -22,14 +32,14 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
 
         public JobUpdateTwinApiModel(string deviceId, DeviceTwinServiceModel deviceTwin)
         {
-            if (deviceTwin != null)
-            {
-                this.Etag = deviceTwin.Etag;
-                this.DeviceId = deviceId;
-                this.Properties = new TwinPropertiesApiModel(deviceTwin.DesiredProperties, deviceTwin.ReportedProperties);
-                this.Tags = deviceTwin.Tags;
-                this.IsSimulated = deviceTwin.IsSimulated;
-            }
+            if (deviceTwin == null) return;
+
+
+            this.Etag = deviceTwin.Etag;
+            this.DeviceId = deviceId;
+            this.Properties = new TwinPropertiesApiModel(deviceTwin.DesiredProperties, deviceTwin.ReportedProperties);
+            this.Tags = deviceTwin.Tags;
+            this.IsSimulated = deviceTwin.IsSimulated;
         }
 
         public DeviceTwinServiceModel ToServiceModel()

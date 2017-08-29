@@ -12,6 +12,8 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
 
         public AuthenticationMechanismApiModel(AuthenticationMechanismServiceModel model)
         {
+            if (model == null) return;
+
             this.AuthenticationType = model.AuthenticationType;
             this.PrimaryKey = model.PrimaryKey;
             this.SecondaryKey = model.SecondaryKey;
@@ -40,9 +42,9 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
             {
                 AuthenticationType = this.AuthenticationType,
                 PrimaryKey = this.PrimaryKey,
-                SecondaryKey = SecondaryKey,
-                PrimaryThumbprint = PrimaryThumbprint,
-                SecondaryThumbprint = SecondaryThumbprint
+                SecondaryKey = this.SecondaryKey,
+                PrimaryThumbprint = this.PrimaryThumbprint,
+                SecondaryThumbprint = this.SecondaryThumbprint
             };
         }
     }
