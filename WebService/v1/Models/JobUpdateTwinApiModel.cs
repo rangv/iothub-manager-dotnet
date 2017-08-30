@@ -12,7 +12,7 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
         [JsonProperty(PropertyName = "Etag", NullValueHandling = NullValueHandling.Ignore)]
         public string Etag { get; set; }
 
-        [JsonProperty(PropertyName = "DeviceId", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "DeviceId")]
         public string DeviceId { get; set; }
 
         [JsonProperty(PropertyName = "Properties", NullValueHandling = NullValueHandling.Ignore)]

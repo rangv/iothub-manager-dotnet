@@ -29,11 +29,10 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
         {
             this.Items = new List<DeviceRegistryApiModel>();
 
-            if (devices == null)
-            {
-                this.ContinuationToken = devices.ContinuationToken;
-                foreach (var d in devices.Items) this.Items.Add(new DeviceRegistryApiModel(d));
-            }
+            if (devices == null) return;
+
+            this.ContinuationToken = devices.ContinuationToken;
+            foreach (var d in devices.Items) this.Items.Add(new DeviceRegistryApiModel(d));
         }
     }
 }

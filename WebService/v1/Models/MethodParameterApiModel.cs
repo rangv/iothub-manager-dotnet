@@ -8,7 +8,7 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
 {
     public class MethodParameterApiModel
     {
-        [JsonProperty(PropertyName = "Name", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "Name")]
         public string Name { get; set; }
 
         [JsonProperty(PropertyName = "ResponseTimeout", NullValueHandling = NullValueHandling.Ignore)]
