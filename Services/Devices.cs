@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.IoTSolutions.IotHubManager.Services.Exceptions;
+using Microsoft.Azure.IoTSolutions.IotHubManager.Services.External;
 using Microsoft.Azure.IoTSolutions.IotHubManager.Services.Helpers;
 using Microsoft.Azure.IoTSolutions.IotHubManager.Services.Models;
 using Microsoft.Azure.IoTSolutions.IotHubManager.Services.Runtime;
-using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Azure.IoTSolutions.IotHubManager.Services
 {
@@ -25,13 +25,17 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.Services
 
     public class Devices : IDevices
     {
-        private const int MaxGetList = 1000;
-        private const string QueryPrefix = "SELECT * FROM devices";
+        private const int MAX_GET_LIST = 1000;
+        private const string QUERY_PREFIX = "SELECT * FROM devices";
 
         private RegistryManager registry;
         private string ioTHubHostName;
 
-        public Devices(IServicesConfig config)
+        private readonly IConfigService configService;
+
+        public Devices(
+            IServicesConfig config,
+            IConfigService configService)
         {
             if (config == null)
             {
@@ -43,6 +47,8 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.Services
                 this.registry = RegistryManager.CreateFromConnectionString(conn);
                 this.ioTHubHostName = IotHubConnectionStringBuilder.Create(conn).HostName;
             });
+
+            this.configService = configService;
         }
 
         /// <summary>
@@ -64,16 +70,15 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.Services
             }
 
             // normally we need deviceTwins for all devices to show device list
-            var devices = await this.registry.GetDevicesAsync(MaxGetList);
+            var devices = await this.registry.GetDevicesAsync(MAX_GET_LIST);
 
-            var twins = await this.GetTwinByQueryAsync(query, continuationToken, MaxGetList);
+            var twins = await this.GetTwinByQueryAsync(query, continuationToken, MAX_GET_LIST);
 
             // since deviceAsync does not support continuationToken for now, we need to ignore those devices which does not shown in twins
             return new DeviceServiceListModel(devices
-                .Where(d => twins.Result.Exists(t => d.Id == t.DeviceId))
-                .Select(azureDevice => new DeviceServiceModel(azureDevice, twins.Result.SingleOrDefault(t => t.DeviceId == azureDevice.Id), this.ioTHubHostName)),
+                    .Where(d => twins.Result.Exists(t => d.Id == t.DeviceId))
+                    .Select(azureDevice => new DeviceServiceModel(azureDevice, twins.Result.SingleOrDefault(t => t.DeviceId == azureDevice.Id), this.ioTHubHostName)),
                 twins.ContinuationToken);
-
         }
 
         public async Task<DeviceServiceModel> GetAsync(string id)
@@ -136,6 +141,9 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.Services
             else
             {
                 azureTwin = await this.registry.UpdateTwinAsync(device.Id, device.Twin.ToAzureModel(), device.Twin.Etag);
+
+                // Update the deviceGroupFilter cache, no need to wait
+                var unused = this.configService.UpdateDeviceGroupFiltersAsync(device.Twin);
             }
 
             return new DeviceServiceModel(azureDevice, azureTwin, this.ioTHubHostName);
@@ -155,12 +163,12 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.Services
         /// <returns></returns>
         private async Task<ResultWithContinuationToken<List<Twin>>> GetTwinByQueryAsync(string query, string continuationToken, int nubmerOfResult)
         {
-            query = string.IsNullOrEmpty(query)? QueryPrefix : $"{QueryPrefix} where {query}";
+            query = string.IsNullOrEmpty(query) ? QUERY_PREFIX : $"{QUERY_PREFIX} where {query}";
 
             var twins = new List<Twin>();
 
             var twinQuery = this.registry.CreateQuery(query);
-            
+
             QueryOptions options = new QueryOptions();
             options.ContinuationToken = continuationToken;
 

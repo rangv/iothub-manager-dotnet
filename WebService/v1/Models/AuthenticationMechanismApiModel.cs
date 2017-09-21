@@ -8,7 +8,8 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
     public class AuthenticationMechanismApiModel
     {
         public AuthenticationMechanismApiModel()
-        { }
+        {
+        }
 
         public AuthenticationMechanismApiModel(AuthenticationMechanismServiceModel model)
         {
