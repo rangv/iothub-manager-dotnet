@@ -9,8 +9,13 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.Services.Models
 {
     public class DeviceTwinServiceModel
     {
+        private const string FIRMWARE_KEY = "Firmware";
+        private const string IS_SIMULATION_KEY = "IsSimulated";
+        private const string IS_SIMULATION_VALUE = "Y";
+
         public string ETag { get; set; }
         public string DeviceId { get; set; }
+        public string Firmware { get; set; }
         public bool IsSimulated { get; set; }
         public Dictionary<string, JToken> DesiredProperties { get; set; }
         public Dictionary<string, JToken> ReportedProperties { get; set; }
@@ -23,6 +28,7 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.Services.Models
         public DeviceTwinServiceModel(
             string etag,
             string deviceId,
+            string firmware,
             Dictionary<string, JToken> desiredProperties,
             Dictionary<string, JToken> reportedProperties,
             Dictionary<string, JToken> tags,
@@ -30,6 +36,7 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.Services.Models
         {
             this.ETag = etag;
             this.DeviceId = deviceId;
+            this.Firmware = firmware;
             this.DesiredProperties = desiredProperties;
             this.ReportedProperties = reportedProperties;
             this.Tags = tags;
@@ -45,7 +52,10 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.Services.Models
                 this.Tags = TwinCollectionToDictionary(twin.Tags);
                 this.DesiredProperties = TwinCollectionToDictionary(twin.Properties.Desired);
                 this.ReportedProperties = TwinCollectionToDictionary(twin.Properties.Reported);
-                this.IsSimulated = this.Tags.ContainsKey("IsSimulated") && this.Tags["IsSimulated"].ToString() == "Y";
+                this.IsSimulated = this.Tags.ContainsKey(IS_SIMULATION_KEY) && this.Tags[IS_SIMULATION_KEY].ToString() == IS_SIMULATION_VALUE;
+
+                if (this.ReportedProperties.ContainsKey(FIRMWARE_KEY)) this.Firmware = this.ReportedProperties[FIRMWARE_KEY].ToString();
+
             }
         }
 

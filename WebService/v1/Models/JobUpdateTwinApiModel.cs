@@ -24,6 +24,9 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
         [JsonProperty(PropertyName = "IsSimulated")]
         public bool IsSimulated { get; set; }
 
+        [JsonProperty(PropertyName = "Firmware")]
+        public string Firmware { get; set; }
+
         public JobUpdateTwinApiModel()
         {
             this.Tags = new Dictionary<string, JToken>();
@@ -39,6 +42,7 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
                 this.Properties = new TwinPropertiesApiModel(deviceTwin.DesiredProperties, deviceTwin.ReportedProperties);
                 this.Tags = deviceTwin.Tags;
                 this.IsSimulated = deviceTwin.IsSimulated;
+                this.Firmware = deviceTwin.Firmware;
             }
         }
 
@@ -48,6 +52,7 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.WebService.v1.Models
             (
                 etag: this.ETag,
                 deviceId: this.DeviceId,
+                firmware: this.Firmware,
                 desiredProperties: this.Properties.Desired,
                 reportedProperties: this.Properties.Reported,
                 tags: this.Tags,
