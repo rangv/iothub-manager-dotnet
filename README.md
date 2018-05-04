@@ -59,7 +59,7 @@ This service depends on the [Config microservice](https://github.com/Azure/pcs-c
 > Note: you can also use a [deployed endpoint][deploy-rm] with [Authentication disabled][disable-auth] (e.g. https://{your-resource-group}.azurewebsites.net/config/v1)
 
 ### 3. Environment variables required to run the service
-In order to run the service, some environment variables that need to be created
+In order to run the service, some environment variables need to be created
 at least once. See specific instructions for IDE or command line setup below for
 more information. More information on environment variables
 [here](#configuration-and-environment-variables).
@@ -107,7 +107,7 @@ This microservice contains the following projects:
 functionality
 * **WebService.Test.csproj** - Unit tests for web services functionality
 * **Services.csproj** - C# assembly containining business logic for interacting 
-with Azure Cosmoze account with type DocumentDb
+with Azure Cosmos account with type SQL
 * **Services.Test.csproj** - Unit tests for services functionality
 * **Solution/scripts** - contains build scripts, docker container creation scripts, 
 and scripts for running the microservice from the command line
