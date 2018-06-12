@@ -4,7 +4,7 @@
 
 # IoTHub Manager Overview
 
-This services manages most of Azure IoT Hub interactions, such as creating and managing IoT devices, device twins, invoking Methods, managing IoT credentials, etc. This service is also used to run Queries to retrieve devices belonging to a particular group (defined by the user).
+This service manages most of Azure IoT Hub interactions, such as creating and managing IoT devices, device twins, invoking methods, managing IoT credentials, etc. This service is also used to run queries to retrieve devices belonging to a particular group (defined by the user).
 
 The microservice provides a RESTful endpoint to manage devices, device twins, commands, methods and all the Azure IoT Hub features required by the [Azure IoT Remote Monitoring](https://github.com/Azure/azure-iot-pcs-remote-monitoring-dotnet) project.
 
@@ -17,7 +17,7 @@ This microservice was built as part of the [Azure IoT Remote Monitoring](https:/
 * Device creation in IoT Hub
 * Read for all devices
 * Read for a single device
-* Query for sets of devices
+* Query for set of devices
 * Update devices
 * Delete devices
 * Schedule jobs
@@ -28,7 +28,7 @@ This microservice was built as part of the [Azure IoT Remote Monitoring](https:/
 
 ## Documentation
 
-* View the API documentation in the [Wiki]({link to wiki})
+* View the API documentation in the [Wiki](https://github.com/Azure/iothub-manager-dotnet/wiki)
 * [Contributing and Development setup](CONTRIBUTING.md)
 * [Development setup, scripts and tools](DEVELOPMENT.md)
 
@@ -109,7 +109,7 @@ functionality
 * **Services.csproj** - C# assembly containining business logic for interacting 
 with Azure Cosmos account with type SQL
 * **Services.Test.csproj** - Unit tests for services functionality
-* **Solution/scripts** - contains build scripts, docker container creation scripts, 
+* **Solution/scripts** - Contains build scripts, docker container creation scripts, 
 and scripts for running the microservice from the command line
 
 ## Updating the Docker image
@@ -156,7 +156,7 @@ Please follow our [contribution guidelines](CONTRIBUTING.md).  We love PRs too.
 
 # Feedback
 
-Please enter issues, bugs, or suggestions as GitHub Issues here: https://github.com/Azure/iothub-manager-dotnet/issues.
+Please enter issues, bugs, or suggestions as GitHub Issues [here](https://github.com/Azure/iothub-manager-dotnet/issues).
 
 # License
 
