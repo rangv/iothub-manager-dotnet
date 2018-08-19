@@ -30,7 +30,7 @@ namespace Microsoft.Azure.IoTSolutions.IotHubManager.Services
 
     public class Devices : IDevices
     {
-        private const int MAX_GET_LIST = 1000;
+        private const int MAX_GET_LIST = 5;
         private const string QUERY_PREFIX = "SELECT * FROM devices";
 
         private RegistryManager registry;
